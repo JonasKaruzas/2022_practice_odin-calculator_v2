@@ -1,14 +1,17 @@
-const num1 = "";
-const num2 = "";
-const operator = "";
-const result = 0;
-const isFirstNumberInput = true;
+const memoryObj = {
+  num1: "",
+  num2: "",
+  operator: "",
+  result: 0,
+  isFirstNumberInput: true,
+};
 
 function createUI(
   _container,
   clearAllHandler,
   clearCurrentHandler,
-  clickHandler
+  clickHandler,
+  _memoryObj
 ) {
   const buttonValues = [
     7,
@@ -54,22 +57,43 @@ function createUI(
   clearAllBtn.innerText = "Clear All";
   clearCurrentBtn.innerText = "Clear Current";
 
-  clearAllBtn.addEventListener("click", clearAllHandler);
-  clearCurrentBtn.addEventListener("click", clearCurrentHandler);
+  clearAllBtn.addEventListener("click", () => clearAllHandler(_memoryObj));
+  clearCurrentBtn.addEventListener("click", () =>
+    clearCurrentHandler(_memoryObj)
+  );
 
   _container.append(board);
 }
 
-const container = document.querySelector("#container");
+function setObjectInitialValues(_memoryObj) {
+  _memoryObj.num1 = "";
+  _memoryObj.num2 = "";
+  _memoryObj.operator = "";
+  _memoryObj.isFirstNumberInput = true;
+}
 
-function a() {
-  console.log(1);
+function showOnDisplay(num) {
+  const display = document.getElementById("display");
+  display.innerText = num;
 }
-function b() {
-  console.log(2);
+
+function clearAll(_memoryObj) {
+  setObjectInitialValues(_memoryObj);
+  showOnDisplay(0);
 }
+
+function clearCurrent(_memoryObj) {
+  _memoryObj.isFirstNumberInput
+    ? (_memoryObj.num1 = "")
+    : (_memoryObj.num2 = "");
+
+  showOnDisplay(0);
+}
+
 function c() {
   console.log(3);
 }
 
-createUI(container, a, b, c);
+const container = document.querySelector("#container");
+
+createUI(container, clearAll, clearCurrent, c, memoryObj);
