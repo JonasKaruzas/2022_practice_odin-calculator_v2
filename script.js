@@ -111,16 +111,16 @@ function calculate(num1, num2, operator) {
   let result = 0;
   switch (operator) {
     case "+":
-      result = parseInt(num1) + parseInt(num2);
+      result = parseFloat(num1) + parseFloat(num2);
       break;
     case "-":
-      result = parseInt(num1) - parseInt(num2);
+      result = parseFloat(num1) - parseFloat(num2);
       break;
     case "*":
-      result = parseInt(num1) * parseInt(num2);
+      result = parseFloat(num1) * parseFloat(num2);
       break;
     case "/":
-      result = parseInt(num1) / parseInt(num2);
+      result = parseFloat(num1) / parseFloat(num2);
       break;
 
     default:
@@ -147,8 +147,6 @@ function mainButtonClick(e, _memoryObj) {
     setOperator(value, _memoryObj);
   } else if (value === "=") {
     getResult(_memoryObj);
-  } else if (value === ".") {
-    console.log("IN PROGRESS");
   } else {
     setNumber(value, _memoryObj);
   }
