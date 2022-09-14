@@ -45,7 +45,7 @@ function createUI(
   buttonValues.forEach((button) => {
     const buttonElement = document.createElement("button");
     buttonElement.innerText = button;
-    buttonElement.addEventListener("click", clickHandler);
+    buttonElement.addEventListener("click", (e) => clickHandler(e, _memoryObj));
     board.append(buttonElement);
   });
 
@@ -72,14 +72,20 @@ function setObjectInitialValues(_memoryObj) {
   _memoryObj.isFirstNumberInput = true;
 }
 
-function showOnDisplay(num) {
+function showOnDisplay(_memoryObj) {
   const display = document.getElementById("display");
-  display.innerText = num;
+  if (_memoryObj.num1 === undefined) {
+    display.innerText = "";
+  } else if (_memoryObj.result) {
+    display.innerText = _memoryObj.result;
+  } else {
+    display.innerText = `${_memoryObj.num1} ${_memoryObj.operator} ${_memoryObj.num2}`;
+  }
 }
 
 function clearAll(_memoryObj) {
   setObjectInitialValues(_memoryObj);
-  showOnDisplay(0);
+  showOnDisplay(_memoryObj);
 }
 
 function clearCurrent(_memoryObj) {
@@ -87,13 +93,69 @@ function clearCurrent(_memoryObj) {
     ? (_memoryObj.num1 = "")
     : (_memoryObj.num2 = "");
 
-  showOnDisplay(0);
+  showOnDisplay(_memoryObj);
 }
 
-function c() {
-  console.log(3);
+function setOperator(operator, _memoryObj) {
+  _memoryObj.operator = operator;
+  _memoryObj.isFirstNumberInput = false;
+}
+
+function setNumber(number, _memoryObj) {
+  _memoryObj.isFirstNumberInput
+    ? (_memoryObj.num1 += number)
+    : (_memoryObj.num2 += number);
+}
+
+function calculate(num1, num2, operator) {
+  let result = 0;
+  switch (operator) {
+    case "+":
+      result = parseInt(num1) + parseInt(num2);
+      break;
+    case "-":
+      result = parseInt(num1) - parseInt(num2);
+      break;
+    case "*":
+      result = parseInt(num1) * parseInt(num2);
+      break;
+    case "/":
+      result = parseInt(num1) / parseInt(num2);
+      break;
+
+    default:
+      break;
+  }
+  return result;
+}
+
+function getResult(_memoryObj) {
+  const result = calculate(
+    _memoryObj.num1,
+    _memoryObj.num2,
+    _memoryObj.operator
+  );
+  clearAll(_memoryObj);
+  _memoryObj.num1 = result;
+}
+
+function mainButtonClick(e, _memoryObj) {
+  const value = e.target.innerText;
+  const operators = ["+", "-", "*", "/"];
+
+  if (operators.includes(value)) {
+    setOperator(value, _memoryObj);
+  } else if (value === "=") {
+    getResult(_memoryObj);
+  } else if (value === ".") {
+    console.log("IN PROGRESS");
+  } else {
+    setNumber(value, _memoryObj);
+  }
+
+  showOnDisplay(_memoryObj);
 }
 
 const container = document.querySelector("#container");
 
-createUI(container, clearAll, clearCurrent, c, memoryObj);
+createUI(container, clearAll, clearCurrent, mainButtonClick, memoryObj);
