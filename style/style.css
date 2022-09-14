@@ -1,4 +1,26 @@
 #container {
   display: flex;
   justify-content: center;
+}
+
+#board {
+  display: grid;
+  grid-template: repeat(6, 60px)/repeat(4, 60px);
+}
+
+#clearAllBtn {
+  grid-column-start: span 2;
+}
+
+#clearCurrentBtn {
+  grid-column-start: span 2;
+}
+
+#display {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  grid-column-start: span 4;
+  padding-right: 20px;
+  background-color: lightblue;
 }/*# sourceMappingURL=style.css.map */
